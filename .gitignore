@@ -1,0 +1,16 @@
+# Secrets
+.env
+*.pem
+*.key
+
+# Runtime state
+memory/
+.openclaw/
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

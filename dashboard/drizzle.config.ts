@@ -5,6 +5,6 @@ export default defineConfig({
   out: "./drizzle",
   dialect: "sqlite",
   dbCredentials: {
-    url: "file:///home/mushahid/atlas/atlas.db",
+    url: process.env.TURSO_DATABASE_URL || "file:./atlas.db",
   },
 });

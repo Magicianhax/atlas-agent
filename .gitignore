@@ -1,5 +1,6 @@
 # Secrets
 .env
+.env.local
 *.pem
 *.key
 
@@ -8,9 +9,17 @@ memory/
 .openclaw/
 node_modules/
 
+# Next.js
+.next/
+out/
+tsconfig.tsbuildinfo
+
 # OS
 .DS_Store
 Thumbs.db
 
 # Logs
 *.log
+
+# Database
+*.db

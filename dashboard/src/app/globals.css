@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "P5Heading";
+  src: local("Impact"), local("Anton"), local("Bebas Neue");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@theme {
+  /* Persona 5 Palette — NO purple */
+  --color-background: #0d0d0d;
+  --color-surface: #141414;
+  --color-surface-light: #1c1c1c;
+  --color-border: #2a2a2a;
+  --color-text: #f5f0e8;
+  --color-text-muted: #8a8578;
+
+  /* Crimson red as primary accent */
+  --color-crimson: #e63946;
+  --color-crimson-dark: #b22d38;
+  --color-crimson-glow: #ff4757;
+
+  /* Gold secondary */
+  --color-gold: #ffd700;
+  --color-gold-dim: #b8980a;
+
+  /* Phase colors — red/gold/white dominant, NO purple */
+  --color-phase-research: #4a9eff;
+  --color-phase-orient: #e63946;
+  --color-phase-thesis: #ffd700;
+  --color-phase-predict: #22c55e;
+  --color-phase-execute: #ff4757;
+  --color-phase-monitor: #8a8578;
+
+  /* Chains */
+  --color-chain-arbitrum: #2d374b;
+  --color-chain-base: #0052ff;
+  --color-chain-optimism: #ff0420;
+
+  /* Status */
+  --color-status-correct: #22c55e;
+  --color-status-incorrect: #e63946;
+  --color-status-pending: #ffd700;
+  --color-status-expired: #8a8578;
+
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  --font-heading: "Impact", "Anton", "Bebas Neue", sans-serif;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+}
+
+/* Subtle diagonal hatching pattern on body */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.03;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 10px,
+    var(--color-crimson) 10px,
+    var(--color-crimson) 11px
+  );
+  pointer-events: none;
+}
+
+/* Scrollbar — Persona 5 red */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-crimson-dark);
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-crimson);
+}
+
+/* ─── P5 Animations ─── */
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-travel {
+  0% { left: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: calc(100% - 8px); opacity: 0; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Persona 5 slash-in reveal */
+@keyframes slash-in {
+  0% {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    opacity: 0;
+  }
+  100% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    opacity: 1;
+  }
+}
+.animate-slash-in {
+  animation: slash-in 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Skew slide-in from left */
+@keyframes skew-in {
+  0% {
+    transform: translateX(-30px) skewX(-8deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) skewX(0);
+    opacity: 1;
+  }
+}
+.animate-skew-in {
+  animation: skew-in 0.3s ease-out both;
+}
+
+/* P5 card hover lift */
+.p5-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.p5-card:hover {
+  transform: translateY(-2px) skewX(-0.5deg);
+  box-shadow: 4px 4px 0 var(--color-crimson-dark);
+}
+
+/* Hard-edged P5-style border accent */
+.p5-border-left {
+  border-left: 3px solid var(--color-crimson);
+  position: relative;
+}
+.p5-border-left::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -3px;
+  width: 3px;
+  height: 12px;
+  background: var(--color-gold);
+}
+
+/* Selection color */
+::selection {
+  background: var(--color-crimson);
+  color: white;
+}
+
+/* Diagonal stripe utility */
+.p5-stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(230, 57, 70, 0.06) 4px,
+    rgba(230, 57, 70, 0.06) 5px
+  );
+}
+
+/* Gold shimmer on hover */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.p5-shimmer:hover {
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 215, 0, 0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out;
+}

@@ -1,61 +1,109 @@
-# ATLAS — Autonomous Transparent Liquidity Allocation System
+<p align="center">
+  <h1 align="center">🧠 ATLAS</h1>
+  <p align="center"><strong>Autonomous Transparent Liquidity Allocation System</strong></p>
+  <p align="center">
+    An AI agent that manages real DeFi capital across EVM L2s with full transparency.
+    <br />
+    Built on <a href="https://github.com/openclaw/openclaw">OpenClaw</a> · Powered by Claude
+  </p>
+  <p align="center">
+    <a href="#quick-start">Quick Start</a> •
+    <a href="#skills">Skills</a> •
+    <a href="#decision-pipeline">Decision Pipeline</a> •
+    <a href="#customization">Customization</a>
+  </p>
+</p>
 
-An autonomous DeFi agent that manages real capital across EVM L2 chains (Arbitrum, Base, Optimism). Built on [OpenClaw](https://github.com/openclaw/openclaw), powered by Claude.
+---
 
-ATLAS makes every decision transparently — research, theses, predictions, trades, and mistakes are all published to a dashboard in real-time.
+## What is ATLAS?
 
-## What It Does
+ATLAS is an autonomous DeFi portfolio manager that runs as an [OpenClaw](https://github.com/openclaw/openclaw) agent. Give it a wallet with some USDC, point it at Arbitrum/Base/Optimism, and it will:
 
-- **Yield farming** — Finds and deploys capital into the best stablecoin lending vaults (Beefy, Morpho, Compound, Euler, Aave)
-- **Cross-chain rebalancing** — Bridges funds via LI.FI to chase yield and maintain chain diversification
-- **Momentum trading** — Detects trending tokens on L2s using DEXScreener volume signals
-- **Pendle strategies** — Fixed yield via PTs, leveraged yield via YTs
-- **Risk management** — Hard limits on position size, chain concentration, drawdowns, and trade frequency
-- **Prediction tracking** — Forms falsifiable theses, scores them against reality, learns from outcomes
+- **Find yields** — Scans Beefy, Morpho, Compound, Euler, Aave for the best stablecoin lending rates
+- **Deploy capital** — Deposits into auto-compounding vaults via on-chain transactions
+- **Rebalance across chains** — Bridges funds via [LI.FI](https://li.fi) to chase yield and maintain diversification
+- **Trade momentum** — Detects trending tokens on L2s using DEXScreener volume signals
+- **Manage Pendle positions** — Fixed yield (PTs) and leveraged yield (YTs)
+- **Enforce risk limits** — Hard caps on position size, chain concentration, drawdowns. No override possible.
+- **Track predictions** — Forms falsifiable theses, scores them, learns from outcomes
+- **Publish everything** — Every decision, trade, and mistake goes to a real-time dashboard
 
-## Architecture
+> **⚠️ This is experimental software managing real money. Start small. Understand the risks.**
+
+---
+
+## How It Works
 
 ```
-atlas-agent/
-├── SOUL.md              # Agent personality, risk parameters, decision pipeline
-├── IDENTITY.md          # Name and role
-├── AGENTS.md            # Workspace conventions
-├── HEARTBEAT.md         # Periodic health checks
-├── TOOLS.md             # API endpoints, token addresses, script usage
-├── CRON_CONFIG.md       # Reference data for scheduled jobs
-├── MEMORY.md            # Long-term memory (agent-maintained)
-├── USER.md              # Your preferences (edit this)
-├── .env.example         # Environment variables template
-├── scripts/
-│   ├── sign-and-send.js     # Sign + broadcast any EVM transaction
-│   ├── approve-token.js     # ERC-20 approval for LI.FI diamond
-│   ├── beefy-deposit.js     # Deposit into Beefy auto-compound vaults
-│   ├── beefy-withdraw.js    # Withdraw from Beefy vaults
-│   └── wait-for-tx.js       # Wait for tx confirmation
-└── skills/
-    ├── chain-scanner/       # Monitor chain health and gas prices
-    ├── dashboard-publisher/ # Push data to transparency dashboard
-    ├── defi-researcher/     # Pull market data from DefiLlama + Beefy
-    ├── lifi-executor/       # Execute cross-chain swaps/bridges via LI.FI
-    ├── momentum-trader/     # Detect and trade trending tokens
-    ├── pendle-strategist/   # Pendle PT/YT fixed + leveraged yield
-    ├── portfolio-tracker/   # Multi-chain balance tracking
-    ├── prediction-scorer/   # Score predictions against outcomes
-    ├── risk-manager/        # Enforce hard risk limits before trades
-    ├── thesis-generator/    # Structure analysis into falsifiable claims
-    └── yield-analyzer/      # Compare yields across chains and protocols
+You fund a wallet with USDC + ETH gas
+        ↓
+ATLAS researches yields across 3 L2 chains
+        ↓
+Forms a thesis → validates against risk limits
+        ↓
+Executes on-chain (deposit, bridge, swap)
+        ↓
+Monitors positions, scores predictions, repeats
 ```
+
+Every step is published transparently. No black box.
+
+### Decision Pipeline
+
+| Phase | What Happens |
+|-------|-------------|
+| 🔬 **RESEARCH** | Pull data from DefiLlama, Beefy, DEXScreener, Pendle |
+| 🧭 **ORIENT** | Compare against baselines, spot anomalies |
+| 📝 **THESIS** | Form a falsifiable claim with evidence + counter-evidence |
+| 🎯 **PREDICT** | Assign confidence level and timeframe |
+| ⚡ **EXECUTE** | Get LI.FI quote → risk check → sign → broadcast |
+| 📊 **MONITOR** | Track outcome, score prediction, update memory |
+
+---
+
+## Skills
+
+ATLAS ships with 11 specialized skills:
+
+| Skill | Purpose |
+|-------|---------|
+| `yield-analyzer` | Compare yields across chains and protocols |
+| `defi-researcher` | Pull market data from DefiLlama + Beefy APIs |
+| `chain-scanner` | Monitor gas prices and chain health |
+| `thesis-generator` | Structure analysis into falsifiable predictions |
+| `risk-manager` | Enforce hard risk limits before any trade |
+| `lifi-executor` | Execute cross-chain swaps and bridges |
+| `portfolio-tracker` | Multi-chain balance tracking (liquid + vaults) |
+| `momentum-trader` | Detect and trade trending tokens via volume signals |
+| `pendle-strategist` | Pendle PT/YT strategies for fixed/leveraged yield |
+| `prediction-scorer` | Score predictions against actual outcomes |
+| `dashboard-publisher` | Push all data to the transparency dashboard |
+
+Plus 5 on-chain execution scripts (built with [viem](https://viem.sh)):
+
+| Script | Purpose |
+|--------|---------|
+| `sign-and-send.js` | Sign and broadcast any EVM transaction |
+| `approve-token.js` | ERC-20 approval for LI.FI diamond contract |
+| `beefy-deposit.js` | Deposit into Beefy auto-compounding vaults |
+| `beefy-withdraw.js` | Withdraw from Beefy vaults |
+| `wait-for-tx.js` | Wait for transaction confirmation |
+
+---
 
 ## Portfolio Allocation
 
 | Bucket | Target | Strategy |
 |--------|--------|----------|
-| Yields | 80% | Stablecoin lending via Beefy auto-compound vaults |
-| Pendle YTs | 10% | Leveraged yield exposure on Arbitrum |
-| Meme coins | 5% | Momentum-based, -15% stop-loss |
-| Alts | 5% | L2 tokens (ARB, OP, AERO), -15% stop-loss |
+| 🏦 Yields | 80% | Stablecoin lending via Beefy auto-compound vaults |
+| 📈 Pendle YTs | 10% | Leveraged yield exposure |
+| 🐸 Meme coins | 5% | Momentum-based, -15% stop-loss |
+| 🔷 Alts | 5% | L2 tokens (ARB, OP, AERO), -15% stop-loss |
 
-## Risk Limits (Hard, No Override)
+## Risk Limits
+
+These are **hard limits** — the agent cannot override them.
 
 | Parameter | Value |
 |-----------|-------|
@@ -69,51 +117,56 @@ atlas-agent/
 | Min trade size | $2 |
 | Cooling period | 2h after loss (4h for momentum) |
 
-## Prerequisites
-
-- [OpenClaw](https://github.com/openclaw/openclaw) installed and running
-- Node.js 18+ (for on-chain scripts)
-- An EVM wallet with USDC + small ETH for gas on target chains
-- [Alchemy](https://dashboard.alchemy.com) API key (free tier works)
-- An Anthropic API key configured in OpenClaw
+---
 
 ## Quick Start
 
-### 1. Clone
+### Prerequisites
+
+- [OpenClaw](https://github.com/openclaw/openclaw) installed and running
+- Node.js 18+
+- An EVM wallet with USDC + small ETH for gas
+- [Alchemy](https://dashboard.alchemy.com) API key (free tier is fine)
+- Anthropic API key configured in OpenClaw
+
+### 1. Clone & Install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/atlas-agent.git
+git clone https://github.com/Magicianhax/atlas-agent.git
 cd atlas-agent
-```
-
-### 2. Run Setup
-
-```bash
 chmod +x setup.sh
 ./setup.sh
 ```
 
-This copies everything into `~/.openclaw/agents/atlas/workspace/`.
+The setup script copies everything into `~/.openclaw/agents/atlas/workspace/` and installs the `viem` dependency.
 
-### 3. Configure Environment
+### 2. Configure
 
 ```bash
 cd ~/.openclaw/agents/atlas/workspace
-cp .env.example .env
-nano .env  # Fill in your wallet address, private key, Alchemy key
+
+# Set your wallet, keys, and API endpoints
+nano .env
+
+# Set your name, timezone, preferences
+nano USER.md
 ```
 
-### 4. Edit Your Profile
+Your `.env` needs:
 
 ```bash
-nano USER.md  # Your name, timezone, preferences
+ATLAS_WALLET_ADDRESS=0xYourWalletAddress
+ATLAS_WALLET_PK=0xYourPrivateKey
+ALCHEMY_API_KEY=your_alchemy_key
+ATLAS_DASHBOARD_URL=http://localhost:3100   # optional
+ATLAS_API_KEY=your_dashboard_key            # optional
 ```
 
-### 5. Add Agent to OpenClaw Config
+### 3. Register the Agent in OpenClaw
 
-Edit `~/.openclaw/openclaw.json` and add to `agents.list`:
+Add to `agents.list` in `~/.openclaw/openclaw.json`:
 
-```json
+```jsonc
 {
   "id": "atlas",
   "name": "atlas",
@@ -122,54 +175,49 @@ Edit `~/.openclaw/openclaw.json` and add to `agents.list`:
     "primary": "anthropic/claude-sonnet-4-6",
     "fallbacks": ["anthropic/claude-opus-4-6"]
   },
-  "subagents": {
-    "allowAgents": ["*"]
-  }
+  "subagents": { "allowAgents": ["*"] }
 }
 ```
 
-### 6. Add a Channel Binding
+### 4. Bind to a Channel
 
-Route messages to Atlas from a Telegram topic, Discord channel, or DM:
+Route a Telegram topic, Discord channel, or DM to Atlas. Add to `bindings` in `openclaw.json`:
 
-```json
+```jsonc
+// Telegram group topic example
 {
   "agentId": "atlas",
   "match": {
     "channel": "telegram",
-    "peer": {
-      "kind": "group",
-      "id": "YOUR_GROUP_ID:topic:YOUR_TOPIC_ID"
-    }
+    "peer": { "kind": "group", "id": "YOUR_GROUP:topic:YOUR_TOPIC" }
+  }
+}
+
+// Discord channel example
+{
+  "agentId": "atlas",
+  "match": {
+    "channel": "discord",
+    "peer": { "kind": "channel", "id": "YOUR_CHANNEL_ID" }
   }
 }
 ```
 
-### 7. Restart OpenClaw
+### 5. Restart & Fund
 
 ```bash
 openclaw gateway restart
 ```
 
-### 8. Fund the Wallet
+Send USDC + ETH (for gas) to your wallet on Arbitrum, Base, and/or Optimism. Atlas will detect the funds and start working.
 
-Send USDC + a small amount of ETH (for gas) to your wallet on:
-- Arbitrum
-- Base
-- Optimism
+---
 
-Atlas will detect the funds and begin deploying.
+## Autonomous Mode (Cron Jobs)
 
-## Scheduled Jobs (Optional)
+For hands-off operation, add scheduled jobs:
 
-For autonomous operation, set up cron jobs in OpenClaw:
-
-| Job | Schedule | Purpose |
-|-----|----------|---------|
-| Pulse | Every 30 min | Portfolio snapshot, gas check, prediction scoring |
-| Strategist | Every 2 hours | Full research cycle, yield analysis, trade execution |
-
-Example cron config (add via OpenClaw `/cron add` or API):
+**Pulse** (every 30 min) — portfolio snapshot, gas check, stop-loss monitoring:
 
 ```json
 {
@@ -177,12 +225,14 @@ Example cron config (add via OpenClaw `/cron add` or API):
   "schedule": { "kind": "cron", "expr": "*/30 * * * *" },
   "payload": {
     "kind": "agentTurn",
-    "message": "Run pulse check: portfolio snapshot, gas prices, score due predictions, check stop-losses on growth positions."
+    "message": "Run pulse: portfolio snapshot, gas prices, score predictions, check stop-losses."
   },
   "sessionTarget": "isolated",
   "delivery": { "mode": "announce" }
 }
 ```
+
+**Strategist** (every 2 hours) — full research + trade execution cycle:
 
 ```json
 {
@@ -190,64 +240,120 @@ Example cron config (add via OpenClaw `/cron add` or API):
   "schedule": { "kind": "cron", "expr": "0 */2 * * *" },
   "payload": {
     "kind": "agentTurn",
-    "message": "Run full strategist cycle: research yields, scan momentum, check Pendle, form theses, execute approved trades. Follow SOUL.md decision pipeline."
+    "message": "Full strategist cycle: research yields, scan momentum, check Pendle, form theses, execute approved trades. Follow SOUL.md decision pipeline."
   },
   "sessionTarget": "isolated",
   "delivery": { "mode": "announce" }
 }
 ```
 
-## Decision Pipeline
+---
 
-Every significant decision follows 6 phases, all published to the dashboard:
+## Data Sources
 
-1. **RESEARCH** — Gather data from DeFi protocols, chain metrics, yield sources
-2. **ORIENT** — Analyze data against baselines, identify patterns and anomalies
-3. **THESIS** — Form a specific, falsifiable claim with evidence and counter-evidence
-4. **PREDICT** — Create a formal prediction with confidence level and timeframe
-5. **EXECUTE** — Get LI.FI quote, validate against risk limits, sign and send
-6. **MONITOR** — Track outcomes, score predictions, learn from results
+All free, no API keys required (except Alchemy for RPC):
 
-## Data Sources (All Free, No Auth)
+| Source | What | URL |
+|--------|------|-----|
+| [DefiLlama](https://defillama.com) | TVL, prices, DEX volumes, stablecoin flows | `api.llama.fi` |
+| [Beefy](https://beefy.finance) | Auto-compound vault APYs and metadata | `api.beefy.finance` |
+| [LI.FI](https://li.fi) | Cross-chain quotes, bridge routes, tx status | `li.quest/v1` |
+| [DEXScreener](https://dexscreener.com) | Token prices, volume, trending tokens | `api.dexscreener.com` |
+| [Pendle](https://pendle.finance) | PT/YT markets, implied APYs | `api-v2.pendle.finance` |
 
-| Source | What | Endpoint |
-|--------|------|----------|
-| DefiLlama | TVL, token prices, DEX volumes, stablecoin flows | api.llama.fi |
-| Beefy Finance | Vault APYs, vault list | api.beefy.finance |
-| LI.FI | Cross-chain quotes, bridge routes, tx status | li.quest/v1 |
-| DEXScreener | Token prices, volume, trending tokens | api.dexscreener.com |
-| Pendle | PT/YT markets, implied APYs | api-v2.pendle.finance |
+---
 
-## Dashboard (Optional)
+## Project Structure
 
-ATLAS is designed to work with a companion Next.js dashboard that displays all decisions, predictions, portfolio snapshots, and transactions in real-time. The dashboard is a separate project — ATLAS will POST data to it if configured, but works fine without it (just logs decisions internally).
+```
+atlas-agent/
+├── README.md                # You are here
+├── setup.sh                 # One-command installer
+├── .env.example             # Environment variables template
+├── .gitignore
+│
+├── SOUL.md                  # Agent personality + risk parameters
+├── IDENTITY.md              # Name and role
+├── AGENTS.md                # Workspace conventions
+├── HEARTBEAT.md             # Periodic health check tasks
+├── TOOLS.md                 # API endpoints, token addresses, scripts
+├── CRON_CONFIG.md           # Reference data for cron jobs
+├── MEMORY.md                # Long-term memory (agent-maintained)
+├── USER.md                  # Your preferences (edit this!)
+│
+├── scripts/                 # On-chain execution (viem)
+│   ├── sign-and-send.js
+│   ├── approve-token.js
+│   ├── beefy-deposit.js
+│   ├── beefy-withdraw.js
+│   └── wait-for-tx.js
+│
+└── skills/                  # Agent skills (11 total)
+    ├── chain-scanner/
+    ├── dashboard-publisher/
+    ├── defi-researcher/
+    ├── lifi-executor/
+    ├── momentum-trader/
+    ├── pendle-strategist/
+    ├── portfolio-tracker/
+    ├── prediction-scorer/
+    ├── risk-manager/
+    ├── thesis-generator/
+    └── yield-analyzer/
+```
+
+---
 
 ## Customization
 
-### Change Target Chains
-Edit `SOUL.md` — update the "Chains" section and adjust token addresses in `TOOLS.md`.
+| Want to... | Edit... |
+|-----------|---------|
+| Change target chains | `SOUL.md` (Chains section) + `TOOLS.md` (token addresses) |
+| Adjust risk limits | `SOUL.md` (Risk Parameters tables) |
+| Change allocation split | `SOUL.md` (Portfolio Allocation Framework) |
+| Add a new skill | Drop a folder in `skills/` with a `SKILL.md` |
+| Change the model | `openclaw.json` agent config (`model.primary`) |
 
-### Change Risk Parameters
-Edit `SOUL.md` — all risk limits are defined there. The risk-manager skill enforces whatever limits SOUL.md specifies.
+---
 
-### Change Allocation
-Edit `SOUL.md` — adjust the Portfolio Allocation Framework section.
+## Security
 
-### Add New Skills
-Drop a folder into `skills/` with a `SKILL.md` file. Atlas will discover and use it automatically.
+- **Private keys** live ONLY in `.env` (gitignored). Scripts read from `process.env` at runtime.
+- **No hardcoded addresses** — everything uses environment variables.
+- **Risk limits are absolute** — the risk-manager skill blocks trades that violate limits. The agent cannot override this.
+- **Emergency halt** triggers automatically at -25% drawdown.
+- **Start small.** This is experimental. Use an amount you're comfortable losing.
 
-## Security Notes
+---
 
-- **Private keys** are stored ONLY in `.env` (gitignored). Scripts read from `process.env`.
-- **No hardcoded addresses** — everything references environment variables.
-- **Risk limits are absolute** — the risk-manager skill cannot be overridden by the agent.
-- **Emergency halt** at -25% drawdown stops all trading automatically.
-- Start with a small amount you're comfortable losing. This is experimental software managing real money.
+## Dashboard (Optional)
+
+ATLAS can publish all decisions, predictions, portfolio snapshots, and transactions to a companion Next.js dashboard in real-time. The dashboard is optional — Atlas works fine without it, logging decisions internally.
+
+If you want the dashboard, configure `ATLAS_DASHBOARD_URL` and `ATLAS_API_KEY` in your `.env`.
+
+---
+
+## Supported Chains
+
+| Chain | Chain ID | RPC via |
+|-------|----------|---------|
+| Arbitrum | 42161 | Alchemy |
+| Base | 8453 | Alchemy |
+| Optimism | 10 | Alchemy |
+
+Adding more chains requires updating the chain maps in `scripts/*.js` and token addresses in `TOOLS.md`.
+
+---
 
 ## License
 
 MIT
 
-## Credits
+## Built With
 
-Built with [OpenClaw](https://github.com/openclaw/openclaw) and Claude by [Anthropic](https://anthropic.com).
+- [OpenClaw](https://github.com/openclaw/openclaw) — Agent runtime
+- [Claude](https://anthropic.com) — AI model (Anthropic)
+- [viem](https://viem.sh) — EVM interaction library
+- [LI.FI](https://li.fi) — Cross-chain execution
+- [Beefy](https://beefy.finance) — Auto-compound vaults
